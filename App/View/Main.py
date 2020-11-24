@@ -55,6 +55,9 @@ def main()->None:
             elif int(inputs[0]) == 3:  #opcion 3
                Init.ejecutarClustersViajes(dataBase)
                 
+            elif int(inputs[0]) == 5:  #opcion 5
+               Init.ejecutarEstacionesCriticas(dataBase)
+                
             elif int(inputs[0])==0: #opcion 0, salir
                 sys.exit(0)
                 

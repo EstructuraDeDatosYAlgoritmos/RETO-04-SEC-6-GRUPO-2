@@ -24,7 +24,6 @@
  *
 """
 
-from DISClib.ADT.graph import numEdges
 from DISClib.ADT import graph
 from DISClib.ADT import map 
 from DISClib.ADT import list 
@@ -32,6 +31,9 @@ from DISClib.DataStructures import listiterator
 from DISClib.DataStructures import mapentry
 from DISClib.Algorithms.Graphs import scc
 from DISClib.Algorithms.Graphs import dijsktra 
+from DISClib.Algorithms.Sorting import mergesort
+
+from App.Model import Comparation
 
 def numClusters(dataBase):
     clusters = scc.KosarajuSCC(dataBase['graph'])
@@ -46,3 +48,23 @@ def numVertices(dataBase):
 
 def numEdges(dataBase):
     return graph.numEdges(dataBase['graph'])
+
+def topViajes(dataBase)->tuple:
+    stations = dataBase['station']
+    topIn = list.newList()
+    topOut = list.newList()
+    topTrips = list.newList()
+    keys = map.keySet(stations)
+    keys = listiterator.newIterator(keys)
+    while listiterator.hasNext(keys):
+        key =listiterator.next(keys)
+        station = map.get(stations,key)
+        station = mapentry.getValue(station)
+        list.addFirst(topIn,{'station':station['name'], 'value':station['tripsIn']})
+        list.addFirst(topOut,{'station':station['name'], 'value':station['tripsOut']})
+        list.addFirst(topTrips,{'station':station['name'], 'value':station['trips']})
+    mergesort.mergesort(topIn,Comparation.upVal)
+    mergesort.mergesort(topOut,Comparation.upVal)
+    mergesort.mergesort(topTrips,Comparation.upVal)
+
+    return (topIn,topOut,topTrips)

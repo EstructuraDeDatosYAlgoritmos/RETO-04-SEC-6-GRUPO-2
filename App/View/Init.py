@@ -25,6 +25,7 @@
  """
 
 from DISClib.ADT import list as lt
+from DISClib.DataStructures import listiterator
 
 from App.Controller import DataBase
 from App.Controller import Funtions
@@ -54,3 +55,22 @@ def ejecutarClustersViajes(dataBase)->None:
         print(f'\n\tlas estaciones {id1} y {id2} estan conectadas')
     else:
         print(f'\n\tlas estaciones {id1} y {id2} no estan conectadas')
+
+def ejecutarEstacionesCriticas(dataBase)->None:
+    analysis = Funtions.estacionesCriticas(dataBase)
+    topIn = listiterator.newIterator(analysis[0]) 
+    topOut = listiterator.newIterator(analysis[1]) 
+    bot = listiterator.newIterator(analysis[2]) 
+
+    print('\n Estaciones de llegada Top')
+    while listiterator.hasNext(topIn):
+        element = listiterator.next(topIn)
+        print(f'\t{element["station"]} con: {element["value"]} viajes')
+    print('\n Estaciones de salida Top')
+    while listiterator.hasNext(topOut):
+        element = listiterator.next(topOut)
+        print(f'\t{element["station"]} con: {element["value"]} viajes')
+    print('\n Estaciones menos usadas')
+    while listiterator.hasNext(bot):
+        element = listiterator.next(bot)
+        print(f'\t{element["station"]} con: {element["value"]} viajes')

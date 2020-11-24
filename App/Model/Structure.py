@@ -25,17 +25,15 @@
 """
 from DISClib.ADT import graph
 from DISClib.ADT import map 
-from DISClib.ADT import list 
-from DISClib.DataStructures import listiterator 
-from DISClib.DataStructures import mapentry
-from DISClib.Algorithms.Graphs import scc
-from DISClib.Algorithms.Graphs import dijsktra 
+
+from App.Model import Comparation
+
 
 
 def initDataBase()->dict:
     dataBase = {
-        'graph' : graph.newGraph('ADJ_LIST',True,14000,compareId),
-        'station' : map.newMap(878756,878777,'CHAINING',1.5,compareId),
+        'graph' : graph.newGraph('ADJ_LIST',True,14000,Comparation.compareId),
+        'station' : map.newMap(878756,878777,'CHAINING',1.5,Comparation.compareId),
         'trips' : 0
     }
     return dataBase
@@ -46,7 +44,9 @@ def newStation():
         'name' : None,
         'latitude': None,
         'longitude' : None,
-        'users' : 0
+        'tripsIn' : 0,
+        'tripsOut' : 0,
+        'trips' : 0
     }
     return station
 
@@ -57,11 +57,3 @@ def newWeight():
     }
     return weight
 
-def compareId(id1, id2):
-    id2 = mapentry.getKey(id2)
-    if (id1 == id2):
-        return 0
-    elif (id1 > id2):
-        return 1
-    else:
-        return -1

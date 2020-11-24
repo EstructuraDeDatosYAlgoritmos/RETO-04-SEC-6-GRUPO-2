@@ -23,12 +23,30 @@
  * Dario Correal
  *
 """
+from DISClib.ADT import list
 
 from App.Model import Analysis
 
-def ClustersViajes(dataBase,id1,id2)->list:
+def ClustersViajes(dataBase,id1,id2)->dict:
     respuesta = {
         'clusters' : Analysis.numClusters(dataBase),
         'conected' : Analysis.sameCluster(dataBase,id1,id2)
     }
     return respuesta
+
+def estacionesCriticas(dataBase)->dict:
+    top3In = list.newList()
+    top3Out = list.newList()
+    bot3 = list.newList()
+
+    analysis = Analysis.topViajes(dataBase)
+
+    i = 0
+    while i < 3:
+        list.addLast(top3In,list.removeFirst(analysis[0]))
+        list.addLast(top3Out,list.removeFirst(analysis[1]))
+        list.addFirst(bot3, list.removeLast(analysis[2]))
+        i += 1
+    del analysis
+
+    return (top3In,top3Out,bot3)

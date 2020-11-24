@@ -49,8 +49,10 @@ from App.Model import Structure
 """
 
 def addTrip(trip:dict, DataBase:dict)->None:
-    updateStation(trip, DataBase)
-    updateRoute(trip, DataBase)
+    if trip["end station id"] != trip["start station id"]:
+        updateStation(trip, DataBase)
+        updateRoute(trip, DataBase)
+        DataBase['trips'] += 1
 
 def updateRoute(trip:dict, DataBase:dict)->None:
     startId = int(trip["start station id"])
@@ -68,7 +70,6 @@ def updateRoute(trip:dict, DataBase:dict)->None:
     weight = edge.weight(edgeRoute)
     weight['time'] = aveTime(weight,tripTime)
     weight['users'] += 1 
-    DataBase['trips'] += 1
 
 def updateStation(trip:dict, DataBase:dict)->None:
     startId = int(trip["start station id"])
@@ -77,8 +78,17 @@ def updateStation(trip:dict, DataBase:dict)->None:
         addStation(0,trip,DataBase)
     if not(map.contains(DataBase['station'],endId)):
         addStation(1,trip,DataBase)
-    
+    stationOut = map.get(DataBase['station'],startId)
+    stationIn = map.get(DataBase['station'],endId)
 
+    stationOut = mapentry.getValue(stationOut)
+    stationIn = mapentry.getValue(stationIn)
+
+    stationOut['tripsOut'] += 1
+    stationIn['tripsIn'] += 1
+
+    stationOut['trips'] += 1
+    stationIn['trips'] += 1
 
 def addStation(type:int, trip:dict, DataBase:dict)->None:
     types = (
