@@ -24,6 +24,7 @@
  *
 """
 
+from App.Model import Structure
 from DISClib.ADT import graph
 from DISClib.ADT import map 
 from DISClib.ADT import list 
@@ -87,4 +88,12 @@ def topTarget(dataBase:dict, target:int)->list:
     
     return targetList
 
-
+def bikeTracking(dataBase, bikeID, date):
+    tracking = Structure.newDate()
+    if map.contains(dataBase['tracking'],bikeID):
+        bike = map.get(dataBase['tracking'],bikeID)
+        bike = mapentry.getValue(bike)
+        if map.contains(bike, date):
+            tracking = map.get(bike, date)
+            tracking = mapentry.getValue(tracking)
+    return tracking

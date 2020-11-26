@@ -23,9 +23,10 @@
  * Dario Correal
  *
 """
-
 from DISClib.ADT import list
 from DISClib.DataStructures import listiterator
+
+from datetime import datetime
 
 from App.Model import Analysis
 
@@ -74,3 +75,21 @@ def EstacionesParaPublicidad(dataBase,target):
         
     return topList
 
+def IdentificarBicicletas(dataBase, bikeID, date):
+    date = datetime.strptime(date,'%Y-%m-%d')
+    tracking = Analysis.bikeTracking(dataBase,bikeID,date.date())
+
+    tracking['stopTime'] = secondsToTime(tracking['stopTime'])
+    tracking['useTime'] = secondsToTime(tracking['useTime'])
+
+    return tracking
+    
+
+def secondsToTime(seconds:int)->datetime:
+    h = (seconds // 60) // 60
+    m = (seconds // 60) % 60
+    s = seconds % 60
+
+    time = f'{h}:{m}:{s}'
+
+    return time

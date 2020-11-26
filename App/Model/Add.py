@@ -23,10 +23,11 @@
  * Dario Correal
  *
 """
-from datetime import date
+from datetime import datetime
 
 from DISClib.ADT import graph
 from DISClib.ADT import map
+from DISClib.ADT import list
 from DISClib.DataStructures import mapentry  
 from DISClib.DataStructures import edge 
 
@@ -57,6 +58,34 @@ def addTrip(trip:dict, DataBase:dict)->None:
         DataBase['trips'] += 1
         if trip["usertype"] == "Customer":
             updateTarget(trip, DataBase)
+
+def addTracking(trip:dict, DataBase:dict)->None:
+    bikeID = int(trip["bikeid"])
+    tracking:map = DataBase['tracking']
+    startDate = datetime.strptime(trip["starttime"],'%Y-%m-%d %H:%M:%S.%f')
+
+    if not map.contains(tracking,bikeID):
+        element = Structure.newBike()
+        map.put(tracking,bikeID,element)
+        DataBase['bikes'] += 1
+
+    bike = map.get(tracking,bikeID)
+    bike = mapentry.getValue(bike)
+    
+    if not map.contains(bike,startDate.date()):
+        element = Structure.newDate()
+        map.put(bike,startDate.date(),element)
+    
+    date = map.get(bike,startDate.date())
+    date = mapentry.getValue(date)
+
+
+    date['useTime'] += int(trip["tripduration"])
+    date['stopTime'] -= int(trip["tripduration"])
+    if list.isPresent(date['stations'],trip["start station name"]) == 0:
+        list.addLast(date['stations'],trip["start station name"])
+    if list.isPresent(date['stations'],trip['end station name']) == 0:
+        list.addLast(date['stations'],trip['end station name'])
 
 def updateRoute(trip:dict, DataBase:dict)->None:
     startId = int(trip["start station id"])
@@ -136,7 +165,7 @@ def getTargetEdge(trip:dict, DataBase:dict)->edge:
     return edgeRoute
 
 def selectTarget(trip:dict)->int:
-    now = date.today()
+    now = datetime.today()
     age = now.year - int(trip["birth year"])
     target = (age - 1)//10
     if target > 6:

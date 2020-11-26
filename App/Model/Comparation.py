@@ -9,6 +9,14 @@ def compareId(id1, id2):
     else:
         return -1
 
+def compareElement(element1, element2):
+    if (element1 == element2):
+        return 0
+    elif (element1 > element2):
+        return 1
+    else:
+        return -1
+
 def tripsVal(element1, element2):
     if element1['value'] > element2['value']:
         return True

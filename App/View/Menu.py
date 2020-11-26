@@ -35,6 +35,7 @@ def mainMenu()->None:
     print("3- Cantidad de clusters de Viajes")
     print("5- Estaciones Criticas")
     print("9- Identificación de Estaciones para Publicidad ")
+    print("10- Identificación de Bicicletas")
     print("0- Salir")
     print("*******************************************")
 
