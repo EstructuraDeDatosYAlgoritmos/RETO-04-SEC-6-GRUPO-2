@@ -57,6 +57,9 @@ def main()->None:
                 
             elif int(inputs[0]) == 5:  #opcion 5
                Init.ejecutarEstacionesCriticas(dataBase)
+            
+            elif int(inputs[0]) == 9:  #opcion 9
+               Init.ejecutarEstacionesParaPublicidad(dataBase)
                 
             elif int(inputs[0])==0: #opcion 0, salir
                 sys.exit(0)

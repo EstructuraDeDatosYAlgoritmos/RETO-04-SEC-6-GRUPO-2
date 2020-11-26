@@ -49,6 +49,11 @@ def numVertices(dataBase):
 def numEdges(dataBase):
     return graph.numEdges(dataBase['graph'])
 
+def getStation(dataBase:dict,id:int)->dict:
+    station = map.get(dataBase['station'],id)
+    station = mapentry.getValue(station)
+    return station
+
 def topViajes(dataBase)->tuple:
     stations = dataBase['station']
     topIn = list.newList()
@@ -63,8 +68,23 @@ def topViajes(dataBase)->tuple:
         list.addFirst(topIn,{'station':station['name'], 'value':station['tripsIn']})
         list.addFirst(topOut,{'station':station['name'], 'value':station['tripsOut']})
         list.addFirst(topTrips,{'station':station['name'], 'value':station['trips']})
-    mergesort.mergesort(topIn,Comparation.upVal)
-    mergesort.mergesort(topOut,Comparation.upVal)
-    mergesort.mergesort(topTrips,Comparation.upVal)
+    mergesort.mergesort(topIn,Comparation.tripsVal)
+    mergesort.mergesort(topOut,Comparation.tripsVal)
+    mergesort.mergesort(topTrips,Comparation.tripsVal)
 
     return (topIn,topOut,topTrips)
+
+def topTarget(dataBase:dict, target:int)->list:
+    targetGraph = dataBase['target'] 
+
+    targetList = list.newList()
+
+    if map.contains(targetGraph, target):
+        targetGraph = map.get(targetGraph, target)
+        targetGraph = mapentry.getValue(targetGraph)
+        targetList = graph.edges(targetGraph)
+        mergesort.mergesort(targetList,Comparation.targetVal)
+    
+    return targetList
+
+

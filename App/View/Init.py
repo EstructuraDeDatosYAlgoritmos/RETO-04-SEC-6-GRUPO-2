@@ -24,9 +24,11 @@
  *
  """
 
+from App.Model import Analysis
 from DISClib.ADT import list as lt
 from DISClib.DataStructures import listiterator
 
+from App.View import Menu
 from App.Controller import DataBase
 from App.Controller import Funtions
 
@@ -74,3 +76,18 @@ def ejecutarEstacionesCriticas(dataBase)->None:
     while listiterator.hasNext(bot):
         element = listiterator.next(bot)
         print(f'\t{element["station"]} con: {element["value"]} viajes')
+
+def ejecutarEstacionesParaPublicidad(dataBase):
+    Menu.targetMenu()
+    target = int(input('Seleccionado: '))
+    analysis = Funtions.EstacionesParaPublicidad(dataBase,target)
+    analysis = listiterator.newIterator(analysis)
+    if listiterator.hasNext(analysis):
+        print('\nLas siguientes estaciones cumplen las condiciones:')
+        while listiterator.hasNext(analysis):
+            element = listiterator.next(analysis)
+            print(f"\n\tSalida: {element['vertexA']}")
+            print(f"\tLlegada: {element['vertexB']}")
+            print(f"\tUsuarios: {element['weight']}")
+    else:
+        print('\nNo se encontraron estaciones que cumplan las condiciones')

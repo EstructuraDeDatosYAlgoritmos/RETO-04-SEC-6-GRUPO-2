@@ -23,7 +23,9 @@
  * Dario Correal
  *
 """
+
 from DISClib.ADT import list
+from DISClib.DataStructures import listiterator
 
 from App.Model import Analysis
 
@@ -50,3 +52,25 @@ def estacionesCriticas(dataBase)->dict:
     del analysis
 
     return (top3In,top3Out,bot3)
+
+def EstacionesParaPublicidad(dataBase,target):
+    analysis = Analysis.topTarget(dataBase,target)
+    analysis = listiterator.newIterator(analysis)
+
+    topList = list.newList()
+
+    maxVal = 0
+    switch = True
+    element = None
+    if listiterator.hasNext(analysis):
+        element = listiterator.next(analysis)
+        maxVal = element['weight']
+    while switch and listiterator.hasNext(analysis):
+        element['vertexA'] = Analysis.getStation(dataBase,element['vertexA'])['name']
+        element['vertexB'] = Analysis.getStation(dataBase,element['vertexB'])['name']
+        list.addLast(topList,element)
+        element = listiterator.next(analysis)
+        switch = maxVal == element['weight']
+        
+    return topList
+

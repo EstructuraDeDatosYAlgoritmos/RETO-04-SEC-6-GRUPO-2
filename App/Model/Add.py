@@ -23,6 +23,8 @@
  * Dario Correal
  *
 """
+from datetime import date
+
 from DISClib.ADT import graph
 from DISClib.ADT import map
 from DISClib.DataStructures import mapentry  
@@ -53,6 +55,8 @@ def addTrip(trip:dict, DataBase:dict)->None:
         updateStation(trip, DataBase)
         updateRoute(trip, DataBase)
         DataBase['trips'] += 1
+        if trip["usertype"] == "Customer":
+            updateTarget(trip, DataBase)
 
 def updateRoute(trip:dict, DataBase:dict)->None:
     startId = int(trip["start station id"])
@@ -90,6 +94,10 @@ def updateStation(trip:dict, DataBase:dict)->None:
     stationOut['trips'] += 1
     stationIn['trips'] += 1
 
+def updateTarget(trip:dict, DataBase:dict)->None:
+    edgeRoute = getTargetEdge(trip, DataBase)
+    edgeRoute['weight'] += 1
+
 def addStation(type:int, trip:dict, DataBase:dict)->None:
     types = (
         'start station ',
@@ -105,6 +113,35 @@ def addStation(type:int, trip:dict, DataBase:dict)->None:
     map.put(DataBase['station'],id,station)
     graph.insertVertex(DataBase['graph'],id)
     
+def getTargetEdge(trip:dict, DataBase:dict)->edge:
+    startId = int(trip["start station id"])
+    endId = int(trip["end station id"])
+    target = selectTarget(trip)
+    
+    if not(map.contains(DataBase['target'],target)):
+        targetGraph = Structure.newTargetGraph()
+        map.put(DataBase['target'],target,targetGraph)
+    targetGraph = mapentry.getValue(map.get(DataBase['target'],target))
+
+    if not(graph.containsVertex(targetGraph,startId)):
+        graph.insertVertex(targetGraph,startId)
+    if not(graph.containsVertex(targetGraph,endId)):
+        graph.insertVertex(targetGraph,endId)
+    
+    edgeRoute = graph.getEdge(targetGraph,startId,endId)
+  
+    if edgeRoute is None:
+        graph.addEdge(targetGraph,startId,endId,0)
+        edgeRoute = graph.getEdge(targetGraph,startId,endId)
+    return edgeRoute
+
+def selectTarget(trip:dict)->int:
+    now = date.today()
+    age = now.year - int(trip["birth year"])
+    target = (age - 1)//10
+    if target > 6:
+        target = 6
+    return target
 
 def aveTime(weight:dict, newTime)->float:
     time = weight['time']

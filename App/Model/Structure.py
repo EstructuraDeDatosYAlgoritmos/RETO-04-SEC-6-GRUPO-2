@@ -28,16 +28,14 @@ from DISClib.ADT import map
 
 from App.Model import Comparation
 
-
-
 def initDataBase()->dict:
     dataBase = {
         'graph' : graph.newGraph('ADJ_LIST',True,14000,Comparation.compareId),
         'station' : map.newMap(878756,878777,'CHAINING',1.5,Comparation.compareId),
+        'target' : map.newMap(7,7,'CHAINING',1.5,Comparation.compareId),
         'trips' : 0
     }
     return dataBase
-
 
 def newStation():
     station = {
@@ -57,3 +55,5 @@ def newWeight():
     }
     return weight
 
+def newTargetGraph():
+    return graph.newGraph('ADJ_LIST',True,14000,Comparation.compareId)

@@ -9,7 +9,12 @@ def compareId(id1, id2):
     else:
         return -1
 
-def upVal(element1, element2):
+def tripsVal(element1, element2):
     if element1['value'] > element2['value']:
+        return True
+    return False
+
+def targetVal(element1, element2):
+    if element1['weight'] > element2['weight']:
         return True
     return False
