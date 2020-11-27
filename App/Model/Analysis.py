@@ -28,10 +28,13 @@ from App.Model import Structure
 from DISClib.ADT import graph
 from DISClib.ADT import map 
 from DISClib.ADT import list 
+from DISClib.ADT import stack
 from DISClib.DataStructures import listiterator 
+from DISClib.DataStructures import edge 
 from DISClib.DataStructures import mapentry
 from DISClib.Algorithms.Graphs import scc
 from DISClib.Algorithms.Graphs import dijsktra 
+from DISClib.Algorithms.Graphs import dfsprueba 
 from DISClib.Algorithms.Sorting import mergesort
 
 from App.Model import Comparation
@@ -88,6 +91,7 @@ def topTarget(dataBase:dict, target:int)->list:
     
     return targetList
 
+<<<<<<< HEAD
 def bikeTracking(dataBase, bikeID, date):
     tracking = Structure.newDate()
     if map.contains(dataBase['tracking'],bikeID):
@@ -97,3 +101,38 @@ def bikeTracking(dataBase, bikeID, date):
             tracking = map.get(bike, date)
             tracking = mapentry.getValue(tracking)
     return tracking
+=======
+    return (topIn,topOut,topTrips)
+
+def rutasCirculares(database,tiempoi, tiempof, station1)-> tuple:
+    lista = []
+    numeroRutas= 0
+    listaDic = []
+    search = dfsprueba.DepthFirstSearch(database, station1)
+    while dfsprueba.dfsVertex(search,database, station1)[1] == True:
+        estaciones = dfsprueba.pathTo(search, station1)
+        for  a in range(1, stack.size(estaciones)):
+            lista.append(stack.getElement(estaciones, a))
+        
+        for i in range(len(lista)):
+            for b in range(i+1, len(lista)):
+                arcos = graph.getEdge(lista[b], lista[a])
+                peso = edge.weight(arcos)
+                tiempo = peso['time']
+                tiempo_arcos+= int(tiempo)
+
+        tiempo_total = tiempo_arcos +(20 * stack.size(estaciones))
+        if tiempo_total>tiempoi and tiempo_total<tiempof:
+            numeroRutas+=1
+            dic = {'estacion inicial': lista[-1], 'estacion final': lista[0], 'Tiempo': tiempo_total}
+            listaDic.append(dic)
+    
+    respuesta = (numeroRutas, listaDic)
+    return respuesta
+    
+    
+
+
+
+
+>>>>>>> Isabelas's-branch

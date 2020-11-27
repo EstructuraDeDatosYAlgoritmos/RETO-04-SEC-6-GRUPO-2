@@ -142,3 +142,10 @@ def size(stack):
         return lt.size(stack)
     except Exception as exp:
         error.reraise(exp, 'TADStack->size: ')
+
+def getElement(stack, pos):
+
+    try:
+        return lt.getElement(stack,pos)
+    except Exception as exp:
+        error.reraise(exp, 'TADStack->getElement: ')
