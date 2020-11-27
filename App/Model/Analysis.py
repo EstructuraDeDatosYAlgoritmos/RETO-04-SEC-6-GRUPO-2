@@ -98,24 +98,6 @@ def rutasCirculares(database,tiempoi, tiempof, station1)-> tuple:
     respuesta = (numeroRutas, listaDic)
     return respuesta
     
-    '''
-    stationList = graph.adjacents(station1)
-    stationList = listiterator.newIterator(stationList)
-    while listiterator.hasNext(stationList):
-        station2 =listiterator.next(stationList)
-        iguales = sameCluster(database, station1, station2)
-
-
-        rutas = dijsktra.pathTo()
-        arcos = graph.getEdge(station1, station2)
-        peso = edge.weight(arcos)
-        tiempo = peso['time']
-
-        if iguales == True:
-            if peso> tiempoi and peso< tiempof:
-                numerorutas+=1
-'''
-def rutainteres(database, lati, longi, latf, longf):
 
 
 
