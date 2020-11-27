@@ -29,6 +29,7 @@ from DISClib.DataStructures import listiterator
 
 from App.Controller import DataBase
 from App.Controller import Funtions
+from App.Model import Analysis
 
 def ejecutarInitDataBase()->dict:
     result = DataBase.initDataBase()
@@ -74,3 +75,10 @@ def ejecutarEstacionesCriticas(dataBase)->None:
     while listiterator.hasNext(bot):
         element = listiterator.next(bot)
         print(f'\t{element["station"]} con: {element["value"]} viajes')
+
+def ejecutarRutasCirculares(database)->None:
+    tiempoi = int(input('Ingrese el primero tiempo del rango que desea: '))
+    tiempof = int(input('Ingrese el segundo tiempo del rango que desea: '))
+    station1 = input('Ingrese la estacion inicial: ')
+    analysis = Analysis.rutasCirculares(database, tiempoi, tiempof, station1)
+    print(f'\n\tSe han encontrado {analysis[0]} rutas circulares las cuales son: {analysis[1]}')

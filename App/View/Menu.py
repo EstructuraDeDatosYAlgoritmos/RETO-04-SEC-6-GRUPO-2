@@ -33,6 +33,8 @@ def mainMenu()->None:
     print("1- Crear estructura de datos")
     print("2- Cargar Datos")
     print("3- Cantidad de clusters de Viajes")
+    print('4 - Rutas Circulares')
     print("5- Estaciones Criticas")
     print("0- Salir")
     print("*******************************************")
+    

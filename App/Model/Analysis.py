@@ -27,10 +27,13 @@
 from DISClib.ADT import graph
 from DISClib.ADT import map 
 from DISClib.ADT import list 
+from DISClib.ADT import stack
 from DISClib.DataStructures import listiterator 
+from DISClib.DataStructures import edge 
 from DISClib.DataStructures import mapentry
 from DISClib.Algorithms.Graphs import scc
 from DISClib.Algorithms.Graphs import dijsktra 
+from DISClib.Algorithms.Graphs import dfsprueba 
 from DISClib.Algorithms.Sorting import mergesort
 
 from App.Model import Comparation
@@ -68,3 +71,52 @@ def topViajes(dataBase)->tuple:
     mergesort.mergesort(topTrips,Comparation.upVal)
 
     return (topIn,topOut,topTrips)
+
+def rutasCirculares(database,tiempoi, tiempof, station1)-> tuple:
+    lista = []
+    numeroRutas= 0
+    listaDic = []
+    search = dfsprueba.DepthFirstSearch(database, station1)
+    while dfsprueba.dfsVertex(search,database, station1)[1] == True:
+        estaciones = dfsprueba.pathTo(search, station1)
+        for  a in range(1, stack.size(estaciones)):
+            lista.append(stack.getElement(estaciones, a))
+        
+        for i in range(len(lista)):
+            for b in range(i+1, len(lista)):
+                arcos = graph.getEdge(lista[b], lista[a])
+                peso = edge.weight(arcos)
+                tiempo = peso['time']
+                tiempo_arcos+= int(tiempo)
+
+        tiempo_total = tiempo_arcos +(20 * stack.size(estaciones))
+        if tiempo_total>tiempoi and tiempo_total<tiempof:
+            numeroRutas+=1
+            dic = {'estacion inicial': lista[-1], 'estacion final': lista[0], 'Tiempo': tiempo_total}
+            listaDic.append(dic)
+    
+    respuesta = (numeroRutas, listaDic)
+    return respuesta
+    
+    '''
+    stationList = graph.adjacents(station1)
+    stationList = listiterator.newIterator(stationList)
+    while listiterator.hasNext(stationList):
+        station2 =listiterator.next(stationList)
+        iguales = sameCluster(database, station1, station2)
+
+
+        rutas = dijsktra.pathTo()
+        arcos = graph.getEdge(station1, station2)
+        peso = edge.weight(arcos)
+        tiempo = peso['time']
+
+        if iguales == True:
+            if peso> tiempoi and peso< tiempof:
+                numerorutas+=1
+'''
+def rutainteres(database, lati, longi, latf, longf):
+
+
+
+

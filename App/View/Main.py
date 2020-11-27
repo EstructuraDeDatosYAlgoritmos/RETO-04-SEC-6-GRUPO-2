@@ -54,6 +54,9 @@ def main()->None:
             
             elif int(inputs[0]) == 3:  #opcion 3
                Init.ejecutarClustersViajes(dataBase)
+            
+            elif int(inputs[0]) == 4:  #opcion 4
+               Init.ejecutarRutasCirculares(dataBase)
                 
             elif int(inputs[0]) == 5:  #opcion 5
                Init.ejecutarEstacionesCriticas(dataBase)
