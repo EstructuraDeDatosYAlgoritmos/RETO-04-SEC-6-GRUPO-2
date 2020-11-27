@@ -127,8 +127,8 @@ def rutasCirculares(database,tiempoi, tiempof, station1)-> tuple:
             dic = {'estacion inicial': lista[-1], 'estacion final': lista[0], 'Tiempo': tiempo_total}
             listaDic.append(dic)
     
-    respuesta = (numeroRutas, listaDic)
-    return respuesta
+    respuestas = (numeroRutas, listaDic)
+    return respuestas
     
     
 
