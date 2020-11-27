@@ -91,6 +91,7 @@ def topTarget(dataBase:dict, target:int)->list:
     
     return targetList
 
+<<<<<<< HEAD
 def bikeTracking(dataBase, bikeID, date):
     tracking = Structure.newDate()
     if map.contains(dataBase['tracking'],bikeID):
@@ -100,8 +101,11 @@ def bikeTracking(dataBase, bikeID, date):
             tracking = map.get(bike, date)
             tracking = mapentry.getValue(tracking)
     return tracking
+=======
+    return (topIn,topOut,topTrips)
 
 def rutasCirculares(database,tiempoi, tiempof, station1)-> tuple:
+    tiempo_arcos = 0
     lista = []
     numeroRutas= 0
     listaDic = []
@@ -124,5 +128,12 @@ def rutasCirculares(database,tiempoi, tiempof, station1)-> tuple:
             dic = {'estacion inicial': lista[-1], 'estacion final': lista[0], 'Tiempo': tiempo_total}
             listaDic.append(dic)
     
-    respuesta = (numeroRutas, listaDic)
-    return respuesta
+    respuestas = (numeroRutas, listaDic)
+    return respuestas
+    
+    
+
+
+
+
+>>>>>>> Isabelas's-branch
