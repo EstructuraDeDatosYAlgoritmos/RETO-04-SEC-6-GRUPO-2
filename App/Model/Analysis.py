@@ -107,7 +107,7 @@ def traerEstacion(dataBase, idStation):
         return (keyValue['value'])
     return None, None
 
-def circularRoutes(dataBase, tiempoi, tiempof, estacioni):
+def rutasCirculares(dataBase, tiempoi, tiempof, estacioni):
    
     ltArcos = gr.edges(dataBase['connections'])
     rutas = 0

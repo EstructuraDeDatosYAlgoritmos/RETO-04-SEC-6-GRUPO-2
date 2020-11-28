@@ -35,9 +35,10 @@ def ClustersViajes(dataBase,id1,id2)->dict:
     }
     return respuesta
 
-def circularRoutes(dataBase, tiempoi, tiempof, estacioni):
-    Analysis.circularRoutes(dataBase, tiempoi, tiempof, estacioni)
-
+def rutasCirculares(dataBase, tiempoi, tiempof, estacioni):
+    analisis = Analysis.rutasCirculares(dataBase, tiempoi, tiempof, estacioni)
+    return analisis
+    
 def estacionesCriticas(dataBase)->dict:
     top3In = list.newList()
     top3Out = list.newList()
