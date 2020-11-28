@@ -8,6 +8,14 @@ def compareId(id1, id2):
         return 1
     else:
         return -1
+def compareIdTree(id1, id2):
+    
+    if (id1 == id2):
+        return 0
+    elif (id1 > id2):
+        return 1
+    else:
+        return -1
 
 def compareElement(element1, element2):
     if (element1 == element2):

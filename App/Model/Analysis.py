@@ -25,15 +25,19 @@
 """
 
 from App.Model import Structure
+from App.Utils import Calc
+
 from DISClib.ADT import graph
 from DISClib.ADT import map 
 from DISClib.ADT import list 
 from DISClib.ADT import stack
+from DISClib.ADT import queue
+from DISClib.ADT import orderedmap
 from DISClib.DataStructures import listiterator 
 from DISClib.DataStructures import edge 
 from DISClib.DataStructures import mapentry
 from DISClib.Algorithms.Graphs import scc
-from DISClib.Algorithms.Graphs import dijsktra 
+from DISClib.Algorithms.Graphs import dijsktraRout 
 from DISClib.Algorithms.Graphs import dfsprueba 
 from DISClib.Algorithms.Sorting import mergesort
 
@@ -128,8 +132,32 @@ def rutasCirculares(database,tiempoi, tiempof, station1)-> tuple:
     respuestas = (numeroRutas, listaDic)
     return respuestas
     
+def nearbyStations(database, longitude, latitude):
+    aspir = queue.newQueue()
+    queue.enqueue(aspir,orderedmap.ceiling(database['position']['latitude'],latitude))
+    queue.enqueue(aspir,orderedmap.ceiling(database['position']['longitude'], longitude))
+    queue.enqueue(aspir,orderedmap.floor(database['position']['longitude'], longitude))
+    queue.enqueue(aspir,orderedmap.floor(database['position']['latitude'],latitude))
+
+    val = None
+    wID = None
     
+    while not queue.isEmpty(aspir):
+        id = queue.dequeue(aspir)
+        id = mapentry.getValue(id)
+        element = map.get(database['station'],id)
+        element = mapentry.getValue(element)
+        dist = abs(Calc.distance(element['latitude'],latitude,element['longitude'],longitude))
+        if val is None:
+            val = dist
+            wID = id
+        if dist < val:
+            val = dist
+            wID = id
+    return wID
 
-
-
-
+def nearbyRoute(database,id1,id2):
+    search = dijsktraRout.Dijkstra(database['graph'],id1)
+    path = dijsktraRout.pathTo(search,id2)
+    time = dijsktraRout.distTo(search,id2)
+    return (path,time)

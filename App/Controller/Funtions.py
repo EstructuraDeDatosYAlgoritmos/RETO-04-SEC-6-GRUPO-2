@@ -84,6 +84,16 @@ def IdentificarBicicletas(dataBase, bikeID, date):
 
     return tracking
     
+def rutaTuristica(dataBase,lon1,lat1,lon2,lat2):
+    startStation = Analysis.nearbyStations(dataBase,lon1,lat1)
+    endStation = Analysis.nearbyStations(dataBase,lon2,lat2)
+    route = Analysis.nearbyRoute(dataBase,startStation,endStation)
+    return {
+        'start': Analysis.getStation(dataBase,startStation)['name'],
+        'end': Analysis.getStation(dataBase,endStation)['name'],
+        'route': route[0],
+        'time': secondsToTime(route[1])
+    }
 
 def secondsToTime(seconds:int)->datetime:
     h = (seconds // 60) // 60

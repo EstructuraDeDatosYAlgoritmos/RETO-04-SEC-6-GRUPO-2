@@ -26,6 +26,7 @@
 from DISClib.ADT import graph
 from DISClib.ADT import map 
 from DISClib.ADT import list
+from DISClib.ADT import orderedmap
 
 from App.Model import Comparation
 
@@ -34,6 +35,7 @@ def initDataBase()->dict:
         'graph' : graph.newGraph('ADJ_LIST',True,14000,Comparation.compareId),
         'station' : map.newMap(878756,878777,'CHAINING',1.5,Comparation.compareId),
         'target' : map.newMap(7,7,'CHAINING',1.5,Comparation.compareId),
+        'position': position(),
         'trips' : 0
     }
     return dataBase
@@ -71,4 +73,10 @@ def newDate():
         'useTime' : 0,
         'stopTime': 86400,
         'stations' : list.newList('ARRAY_LIST',Comparation.compareElement) 
+    }
+
+def position():
+    return {
+        'latitude': orderedmap.newMap('RBT', Comparation.compareIdTree),
+        'longitude' : orderedmap.newMap('RBT', Comparation.compareIdTree),
     }

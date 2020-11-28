@@ -28,6 +28,7 @@ from datetime import datetime
 from DISClib.ADT import graph
 from DISClib.ADT import map
 from DISClib.ADT import list
+from DISClib.ADT import orderedmap
 from DISClib.DataStructures import mapentry  
 from DISClib.DataStructures import edge 
 
@@ -109,8 +110,10 @@ def updateStation(trip:dict, DataBase:dict)->None:
     endId = int(trip["end station id"])
     if not(map.contains(DataBase['station'],startId)):
         addStation(0,trip,DataBase)
+        addPosition(0,trip,DataBase)
     if not(map.contains(DataBase['station'],endId)):
         addStation(1,trip,DataBase)
+        addPosition(1,trip,DataBase)
     stationOut = map.get(DataBase['station'],startId)
     stationIn = map.get(DataBase['station'],endId)
 
@@ -141,6 +144,26 @@ def addStation(type:int, trip:dict, DataBase:dict)->None:
 
     map.put(DataBase['station'],id,station)
     graph.insertVertex(DataBase['graph'],id)
+
+def addPosition(type:int, trip:dict, DataBase:dict)->None:
+    types = (
+        'start station ',
+        'end station '
+    )
+
+    id = int(trip[types[type]+'id'])
+    latitude = trip[types[type]+'latitude']
+    longitude = trip[types[type]+'longitude']
+
+    if orderedmap.contains(DataBase['position']['latitude'], latitude):
+        print(f'la ID {id} comparte latitude')
+    if orderedmap.contains(DataBase['position']['longitude'], longitude):
+        print(f'la ID {id} comparte longitude')
+
+    orderedmap.put(DataBase['position']['latitude'], latitude,id)
+    orderedmap.put(DataBase['position']['longitude'], longitude,id)
+
+
     
 def getTargetEdge(trip:dict, DataBase:dict)->edge:
     startId = int(trip["start station id"])

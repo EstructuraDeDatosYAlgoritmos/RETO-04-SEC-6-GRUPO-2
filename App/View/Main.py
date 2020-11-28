@@ -61,6 +61,9 @@ def main()->None:
             elif int(inputs) == 5:  #opcion 5
                Init.ejecutarEstacionesCriticas(dataBase)
             
+            elif int(inputs) == 8:  #opcion 8
+               Init.ejecutarRutaTuristica(dataBase)
+
             elif int(inputs) == 9:  #opcion 9
                Init.ejecutarEstacionesParaPublicidad(dataBase)
                 

@@ -124,3 +124,27 @@ def ejecutarRutasCirculares(database)->None:
     station1 = input('Ingrese la estacion inicial: ')
     analysis = Analysis.rutasCirculares(database, tiempoi, tiempof, station1)
     print(f'\n\tSe han encontrado {analysis[0]} rutas circulares las cuales son: {analysis[1]}')
+
+def ejecutarRutaTuristica(database)->None:
+    lon1 = int(input('Ingrese la longitud del punto de inicio: '))
+    lat1 = int(input('Ingrese la latitud del punto de inicio: '))
+    lon2 = int(input('Ingrese la longitud del punto de llegada: '))
+    lat2 = int(input('Ingrese la latitud del punto de llegada: '))
+
+    analysis = Funtions.rutaTuristica(database, lon1, lat1,lon2, lat2)
+
+    print(analysis)
+
+def ejecutarRutaResistencia(dataBase):     
+    tiempoMax=int(input('Ingrese el tiempo máximo que puede pedalear en minutos: '))
+    id1 = int(input('Ingrese la id de su estación: '))
+    ltEdges = graph.edges(dataBase['Clusters']) 
+    for i in range(1, lt.size(ltEdges)+1): 
+        station = lt.getElement(ltEdges, i) #Estacion final - Estacion inicial (id) -> str
+        if str(id1) == station['vertexA']: #Identificar los que tienen el mismo idEstacionInicial
+            duration = station['weight']/60 #Duracion (tripduration) en minutos
+            duration = round(duration, 2)
+            listaRutas = lt.newList(datastructure='ARRAY_LIST')
+            if duration <= tiempoMax: 
+                lt.addFirst(listaRutas, (station['vertexA'], station['vertexB'], duration))
+                print (listaRutas['elements'])
