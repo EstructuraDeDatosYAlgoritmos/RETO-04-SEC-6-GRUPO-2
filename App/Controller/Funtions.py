@@ -25,9 +25,7 @@
 """
 from DISClib.ADT import list
 from DISClib.DataStructures import listiterator
-
 from datetime import datetime
-
 from App.Model import Analysis
 
 def ClustersViajes(dataBase,id1,id2)->dict:
@@ -36,6 +34,9 @@ def ClustersViajes(dataBase,id1,id2)->dict:
         'conected' : Analysis.sameCluster(dataBase,id1,id2)
     }
     return respuesta
+
+def circularRoutes(dataBase, tiempoi, tiempof, estacioni):
+    Analysis.circularRoutes(dataBase, tiempoi, tiempof, estacioni)
 
 def estacionesCriticas(dataBase)->dict:
     top3In = list.newList()

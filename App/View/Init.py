@@ -119,8 +119,9 @@ def ejecutarIdentificarBicicletas(dataBase):
         print('\t',listiterator.next(stations))
 
 def ejecutarRutasCirculares(database)->None:
-    tiempoi = int(input('Ingrese el primero tiempo del rango que desea: '))
-    tiempof = int(input('Ingrese el segundo tiempo del rango que desea: '))
-    station1 = input('Ingrese la estacion inicial: ')
-    analysis = Analysis.rutasCirculares(database, tiempoi, tiempof, station1)
-    print(f'\n\tSe han encontrado {analysis[0]} rutas circulares las cuales son: {analysis[1]}')
+    estacioni = input("\nIngrese el ID de la estación inicial: ")
+    print("\nAhora ingrese su tiempo disponible en minutos: ")
+    tiempoi = int(input("\nEntre: "))
+    tiempof = int(input("\nHasta: "))
+    Funtions.circularRoutes(citibike, tiempoi, tiempof, estacioni)
+   

@@ -25,7 +25,7 @@
 """
 
 from App.Model import Structure
-from DISClib.ADT import graph
+from DISClib.ADT import graph as gr
 from DISClib.ADT import map 
 from DISClib.ADT import list 
 from DISClib.ADT import stack
@@ -100,7 +100,7 @@ def bikeTracking(dataBase, bikeID, date):
             tracking = map.get(bike, date)
             tracking = mapentry.getValue(tracking)
     return tracking
-
+'''
 def rutasCirculares(database,tiempoi, tiempof, station1)-> tuple:
     tiempo_arcos = 0
     lista = []
@@ -127,9 +127,41 @@ def rutasCirculares(database,tiempoi, tiempof, station1)-> tuple:
     
     respuestas = (numeroRutas, listaDic)
     return respuestas
+
+  '''
+def getStation(dataBase, idStation):
+    if m.contains(dataBase['name_IDstations'], idStation):
+        keyValue = m.get(dataBase['name_IDstations'], idStation)
+        return (keyValue['value'])
+    return None, None
+    
+def circularRoutes(dataBase, tiempoi, tiempof, estacioni):
+   
+    ltEdges = gr.edges(dataBase['connections'])
+    numRutas = 0
+    ltCircularRoutes = lt.newList(datastructure='ARRAY_LIST')
     
     
+    for i in range(1, lt.size(ltEdges)+1): 
+        station = lt.getElement(ltEdges, i)
+        if str(estacioni) == station['vertexA']:
+            finalStation = station['vertexB']
+            try:
+                arcoExiste = gr.getEdge(dataBase['connections'], finalStation, estacioni)
+                weightFinalStation = arcoExiste['weight']
+                duration = station['weight'] + weightFinalStation
+                if duration+20 >= tiempoi and duration+20 <= tiempof:
+                    numRutas += 1
+                    nameStartStation = getStation(dataBase, estacioni)
+                    nameEndStation = getStation(dataBase, finalStation)
+                    lt.addLast(ltCircularRoutes, (nameStartStation, nameEndStation, duration))
+            except:
+                pass   
+    
+    print("\nEl número de rutas circulares es " + str(numRutas) + " y estos son los datos: ")
 
-
-
+    for i in range(1, lt.size(ltCircularRoutes)+1):
+        print("\nNombre de estación inicial: " + str(lt.getElement(ltCircularRoutes, i)[0]))
+        print("\nNombre de estación final: " + str(lt.getElement(ltCircularRoutes, i)[1]))
+        print("\nDuración estimada: " + str(lt.getElement(ltCircularRoutes, i)[2]) + " minutos")
 
