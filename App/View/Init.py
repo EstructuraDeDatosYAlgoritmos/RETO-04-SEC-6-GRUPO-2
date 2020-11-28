@@ -24,23 +24,33 @@
  *
  """
 
+
 from DISClib.ADT import list as lt
 from DISClib.DataStructures import listiterator
 
+from App.View import Menu
 from App.Controller import DataBase
 from App.Controller import Funtions
 from App.Model import Analysis
 
 def ejecutarInitDataBase()->dict:
     result = DataBase.initDataBase()
-    print('Base de datos creada')
+    print('\nBase de datos creada')
     return result
 
+def ejecutarInitTracking(dataBase):
+    DataBase.initTracking(dataBase)
+    print('\nIniciando Carga')
+
+def ejecutarLoadTracking(dataBase):
+    DataBase.loadTracking(dataBase)
+    print('IDs cargados: ',dataBase['bikes'])
 
 def ejecutarLoadData(dataBase)->bool:
+    print('\nIniciando Carga')
     result = DataBase.loadData(dataBase)
     analysis = DataBase.analyze(dataBase)
-    print(f"Datos actualizados:\
+    print(f"\nDatos actualizados:\
             \n\tViajes: {analysis['trips']}\
             \n\tVértices: {analysis['vertices']}\
             \n\tArcos: {analysis['edges']}\
@@ -64,17 +74,49 @@ def ejecutarEstacionesCriticas(dataBase)->None:
     bot = listiterator.newIterator(analysis[2]) 
 
     print('\n Estaciones de llegada Top')
+    cont = 1
     while listiterator.hasNext(topIn):
         element = listiterator.next(topIn)
-        print(f'\t{element["station"]} con: {element["value"]} viajes')
+        print(f'\t{cont}. {element["station"]} con: {element["value"]} viajes')
+        cont += 1
     print('\n Estaciones de salida Top')
+    cont = 1
     while listiterator.hasNext(topOut):
         element = listiterator.next(topOut)
-        print(f'\t{element["station"]} con: {element["value"]} viajes')
+        print(f'\t{cont}. {element["station"]} con: {element["value"]} viajes')
+        cont += 1
     print('\n Estaciones menos usadas')
     while listiterator.hasNext(bot):
         element = listiterator.next(bot)
-        print(f'\t{element["station"]} con: {element["value"]} viajes')
+        print(f'\t#. {element["station"]} con: {element["value"]} viajes')
+
+def ejecutarEstacionesParaPublicidad(dataBase):
+    Menu.targetMenu()
+    target = int(input('Seleccionado: '))
+    analysis = Funtions.EstacionesParaPublicidad(dataBase,target)
+    analysis = listiterator.newIterator(analysis)
+    if listiterator.hasNext(analysis):
+        print('\nLas siguientes estaciones cumplen las condiciones:')
+        while listiterator.hasNext(analysis):
+            element = listiterator.next(analysis)
+            print(f"\n\tSalida: {element['vertexA']}")
+            print(f"\tLlegada: {element['vertexB']}")
+            print(f"\tUsuarios: {element['weight']}")
+    else:
+        print('\nNo se encontraron estaciones que cumplan las condiciones')
+
+def ejecutarIdentificarBicicletas(dataBase):
+    bikeID = int(input('\nID de la bicicleta: '))
+    date = input("Ingrese la fecha (YYYY-MM-DD): ")
+
+    analysis = Funtions.IdentificarBicicletas(dataBase,bikeID,date)
+    stations = listiterator.newIterator(analysis['stations'])
+
+    print(f'\nTiempo de uso: {analysis["useTime"]}')
+    print(f"Timpo estacionada: {analysis['stopTime']}")
+    print('Estaciones Usadas:')
+    while listiterator.hasNext(stations):
+        print('\t',listiterator.next(stations))
 
 def ejecutarRutasCirculares(database)->None:
     tiempoi = int(input('Ingrese el primero tiempo del rango que desea: '))

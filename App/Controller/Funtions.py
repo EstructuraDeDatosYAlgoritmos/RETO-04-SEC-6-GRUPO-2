@@ -24,6 +24,9 @@
  *
 """
 from DISClib.ADT import list
+from DISClib.DataStructures import listiterator
+
+from datetime import datetime
 
 from App.Model import Analysis
 
@@ -50,3 +53,43 @@ def estacionesCriticas(dataBase)->dict:
     del analysis
 
     return (top3In,top3Out,bot3)
+
+def EstacionesParaPublicidad(dataBase,target):
+    analysis = Analysis.topTarget(dataBase,target)
+    analysis = listiterator.newIterator(analysis)
+
+    topList = list.newList()
+
+    maxVal = 0
+    switch = True
+    element = None
+    if listiterator.hasNext(analysis):
+        element = listiterator.next(analysis)
+        maxVal = element['weight']
+    while switch and listiterator.hasNext(analysis):
+        element['vertexA'] = Analysis.getStation(dataBase,element['vertexA'])['name']
+        element['vertexB'] = Analysis.getStation(dataBase,element['vertexB'])['name']
+        list.addLast(topList,element)
+        element = listiterator.next(analysis)
+        switch = maxVal == element['weight']
+        
+    return topList
+
+def IdentificarBicicletas(dataBase, bikeID, date):
+    date = datetime.strptime(date,'%Y-%m-%d')
+    tracking = Analysis.bikeTracking(dataBase,bikeID,date.date())
+
+    tracking['stopTime'] = secondsToTime(tracking['stopTime'])
+    tracking['useTime'] = secondsToTime(tracking['useTime'])
+
+    return tracking
+    
+
+def secondsToTime(seconds:int)->datetime:
+    h = (seconds // 60) // 60
+    m = (seconds // 60) % 60
+    s = seconds % 60
+
+    time = f'{h}:{m}:{s}'
+
+    return time

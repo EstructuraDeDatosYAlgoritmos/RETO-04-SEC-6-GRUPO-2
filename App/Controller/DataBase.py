@@ -36,6 +36,8 @@ from App.Model import Analysis
 def initDataBase()->dict:
     return Structure.initDataBase()
 
+def initTracking(dataBase):
+    Structure.initTracking(dataBase)
 
 def getFiles()->queue:
     files = queue.newQueue()
@@ -56,9 +58,27 @@ def loadData(DataBase)->bool:
                 cont += 1
                 Add.addTrip(element,DataBase)
                 if cont == Const.SIZE:
-                    print(cont)
+                    print(f"\tLineas cargadas: {cont}")
                     return True
-        print(cont)
+        print(f"\tLineas cargadas: {cont}")
+
+    return True
+
+def loadTracking(DataBase)->bool:
+    files = getFiles()
+    dialect = csv.excel()
+    dialect.delimiter = ','
+    while not(queue.isEmpty(files)):
+        with open(queue.dequeue(files), encoding="utf-8") as csvfile:
+            buffer = csv.DictReader(csvfile, dialect=dialect)
+            cont = 0
+            for element in buffer:
+                cont += 1
+                Add.addTracking(element,DataBase)
+                if cont == Const.SIZE:
+                    print(f"\tLineas cargadas: {cont}")
+                    return True
+        print(f"\tLineas cargadas: {cont}")
 
     return True
 

@@ -24,6 +24,7 @@
  *
 """
 
+from App.Model import Structure
 from DISClib.ADT import graph
 from DISClib.ADT import map 
 from DISClib.ADT import list 
@@ -52,6 +53,11 @@ def numVertices(dataBase):
 def numEdges(dataBase):
     return graph.numEdges(dataBase['graph'])
 
+def getStation(dataBase:dict,id:int)->dict:
+    station = map.get(dataBase['station'],id)
+    station = mapentry.getValue(station)
+    return station
+
 def topViajes(dataBase)->tuple:
     stations = dataBase['station']
     topIn = list.newList()
@@ -66,13 +72,37 @@ def topViajes(dataBase)->tuple:
         list.addFirst(topIn,{'station':station['name'], 'value':station['tripsIn']})
         list.addFirst(topOut,{'station':station['name'], 'value':station['tripsOut']})
         list.addFirst(topTrips,{'station':station['name'], 'value':station['trips']})
-    mergesort.mergesort(topIn,Comparation.upVal)
-    mergesort.mergesort(topOut,Comparation.upVal)
-    mergesort.mergesort(topTrips,Comparation.upVal)
+    mergesort.mergesort(topIn,Comparation.tripsVal)
+    mergesort.mergesort(topOut,Comparation.tripsVal)
+    mergesort.mergesort(topTrips,Comparation.tripsVal)
 
     return (topIn,topOut,topTrips)
 
+def topTarget(dataBase:dict, target:int)->list:
+    targetGraph = dataBase['target'] 
+
+    targetList = list.newList()
+
+    if map.contains(targetGraph, target):
+        targetGraph = map.get(targetGraph, target)
+        targetGraph = mapentry.getValue(targetGraph)
+        targetList = graph.edges(targetGraph)
+        mergesort.mergesort(targetList,Comparation.targetVal)
+    
+    return targetList
+
+def bikeTracking(dataBase, bikeID, date):
+    tracking = Structure.newDate()
+    if map.contains(dataBase['tracking'],bikeID):
+        bike = map.get(dataBase['tracking'],bikeID)
+        bike = mapentry.getValue(bike)
+        if map.contains(bike, date):
+            tracking = map.get(bike, date)
+            tracking = mapentry.getValue(tracking)
+    return tracking
+
 def rutasCirculares(database,tiempoi, tiempof, station1)-> tuple:
+    tiempo_arcos = 0
     lista = []
     numeroRutas= 0
     listaDic = []
@@ -95,8 +125,9 @@ def rutasCirculares(database,tiempoi, tiempof, station1)-> tuple:
             dic = {'estacion inicial': lista[-1], 'estacion final': lista[0], 'Tiempo': tiempo_total}
             listaDic.append(dic)
     
-    respuesta = (numeroRutas, listaDic)
-    return respuesta
+    respuestas = (numeroRutas, listaDic)
+    return respuestas
+    
     
 
 

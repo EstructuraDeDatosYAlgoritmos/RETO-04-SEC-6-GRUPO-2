@@ -23,8 +23,11 @@
  * Dario Correal
  *
 """
+from datetime import datetime
+
 from DISClib.ADT import graph
 from DISClib.ADT import map
+from DISClib.ADT import list
 from DISClib.DataStructures import mapentry  
 from DISClib.DataStructures import edge 
 
@@ -53,6 +56,36 @@ def addTrip(trip:dict, DataBase:dict)->None:
         updateStation(trip, DataBase)
         updateRoute(trip, DataBase)
         DataBase['trips'] += 1
+        if trip["usertype"] == "Customer":
+            updateTarget(trip, DataBase)
+
+def addTracking(trip:dict, DataBase:dict)->None:
+    bikeID = int(trip["bikeid"])
+    tracking:map = DataBase['tracking']
+    startDate = datetime.strptime(trip["starttime"],'%Y-%m-%d %H:%M:%S.%f')
+
+    if not map.contains(tracking,bikeID):
+        element = Structure.newBike()
+        map.put(tracking,bikeID,element)
+        DataBase['bikes'] += 1
+
+    bike = map.get(tracking,bikeID)
+    bike = mapentry.getValue(bike)
+    
+    if not map.contains(bike,startDate.date()):
+        element = Structure.newDate()
+        map.put(bike,startDate.date(),element)
+    
+    date = map.get(bike,startDate.date())
+    date = mapentry.getValue(date)
+
+
+    date['useTime'] += int(trip["tripduration"])
+    date['stopTime'] -= int(trip["tripduration"])
+    if list.isPresent(date['stations'],trip["start station name"]) == 0:
+        list.addLast(date['stations'],trip["start station name"])
+    if list.isPresent(date['stations'],trip['end station name']) == 0:
+        list.addLast(date['stations'],trip['end station name'])
 
 def updateRoute(trip:dict, DataBase:dict)->None:
     startId = int(trip["start station id"])
@@ -90,6 +123,10 @@ def updateStation(trip:dict, DataBase:dict)->None:
     stationOut['trips'] += 1
     stationIn['trips'] += 1
 
+def updateTarget(trip:dict, DataBase:dict)->None:
+    edgeRoute = getTargetEdge(trip, DataBase)
+    edgeRoute['weight'] += 1
+
 def addStation(type:int, trip:dict, DataBase:dict)->None:
     types = (
         'start station ',
@@ -105,6 +142,35 @@ def addStation(type:int, trip:dict, DataBase:dict)->None:
     map.put(DataBase['station'],id,station)
     graph.insertVertex(DataBase['graph'],id)
     
+def getTargetEdge(trip:dict, DataBase:dict)->edge:
+    startId = int(trip["start station id"])
+    endId = int(trip["end station id"])
+    target = selectTarget(trip)
+    
+    if not(map.contains(DataBase['target'],target)):
+        targetGraph = Structure.newTargetGraph()
+        map.put(DataBase['target'],target,targetGraph)
+    targetGraph = mapentry.getValue(map.get(DataBase['target'],target))
+
+    if not(graph.containsVertex(targetGraph,startId)):
+        graph.insertVertex(targetGraph,startId)
+    if not(graph.containsVertex(targetGraph,endId)):
+        graph.insertVertex(targetGraph,endId)
+    
+    edgeRoute = graph.getEdge(targetGraph,startId,endId)
+  
+    if edgeRoute is None:
+        graph.addEdge(targetGraph,startId,endId,0)
+        edgeRoute = graph.getEdge(targetGraph,startId,endId)
+    return edgeRoute
+
+def selectTarget(trip:dict)->int:
+    now = datetime.today()
+    age = now.year - int(trip["birth year"])
+    target = (age - 1)//10
+    if target > 6:
+        target = 6
+    return target
 
 def aveTime(weight:dict, newTime)->float:
     time = weight['time']

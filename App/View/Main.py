@@ -43,25 +43,33 @@ def main()->None:
 
     while True:
         Menu.mainMenu() #imprimir el menu de opciones en consola
-        inputs = input('Seleccione una opción para continuar\n') #leer opción ingresada
+        inputs = input('Selección: ') #leer opción ingresada
         
         if len(inputs)>0 and (dataReady or int(inputs[0])<=2) and (dataBase is not None or int(inputs[0])<=2):
-            if int(inputs[0]) == 1:  #opcion 1
+            if int(inputs) == 1:  #opcion 1
                 dataBase = Init.ejecutarInitDataBase()
 
-            elif int(inputs[0]) == 2:  #opcion 2
+            elif int(inputs) == 2:  #opcion 2
                 dataReady = Init.ejecutarLoadData(dataBase)
             
-            elif int(inputs[0]) == 3:  #opcion 3
+            elif int(inputs) == 3:  #opcion 3
                Init.ejecutarClustersViajes(dataBase)
             
             elif int(inputs[0]) == 4:  #opcion 4
                Init.ejecutarRutasCirculares(dataBase)
                 
-            elif int(inputs[0]) == 5:  #opcion 5
+            elif int(inputs) == 5:  #opcion 5
                Init.ejecutarEstacionesCriticas(dataBase)
+            
+            elif int(inputs) == 9:  #opcion 9
+               Init.ejecutarEstacionesParaPublicidad(dataBase)
                 
-            elif int(inputs[0])==0: #opcion 0, salir
+            elif int(inputs) == 10:  #opcion 10
+                Init.ejecutarInitTracking(dataBase)
+                Init.ejecutarLoadTracking(dataBase)
+                Init.ejecutarIdentificarBicicletas(dataBase)
+
+            elif int(inputs)==0: #opcion 0, salir
                 sys.exit(0)
                 
         else:
