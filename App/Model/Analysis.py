@@ -91,7 +91,6 @@ def topTarget(dataBase:dict, target:int)->list:
     
     return targetList
 
-<<<<<<< HEAD
 def bikeTracking(dataBase, bikeID, date):
     tracking = Structure.newDate()
     if map.contains(dataBase['tracking'],bikeID):
@@ -101,8 +100,6 @@ def bikeTracking(dataBase, bikeID, date):
             tracking = map.get(bike, date)
             tracking = mapentry.getValue(tracking)
     return tracking
-=======
-    return (topIn,topOut,topTrips)
 
 def rutasCirculares(database,tiempoi, tiempof, station1)-> tuple:
     tiempo_arcos = 0
@@ -136,4 +133,3 @@ def rutasCirculares(database,tiempoi, tiempof, station1)-> tuple:
 
 
 
->>>>>>> Isabelas's-branch
