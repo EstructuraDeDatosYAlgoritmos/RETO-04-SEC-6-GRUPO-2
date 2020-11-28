@@ -105,32 +105,33 @@ def bikeTracking(dataBase, bikeID, date):
             tracking = mapentry.getValue(tracking)
     return tracking
 
-def rutasCirculares(database,tiempoi, tiempof, station1)-> tuple:
-    tiempo_arcos = 0
-    lista = []
-    numeroRutas= 0
-    listaDic = []
-    search = dfsprueba.DepthFirstSearch(database, station1)
-    while dfsprueba.dfsVertex(search,database, station1)[1] == True:
-        estaciones = dfsprueba.pathTo(search, station1)
-        for  a in range(1, stack.size(estaciones)):
-            lista.append(stack.getElement(estaciones, a))
-        
-        for i in range(len(lista)):
-            for b in range(i+1, len(lista)):
-                arcos = graph.getEdge(lista[b], lista[a])
-                peso = edge.weight(arcos)
-                tiempo = peso['time']
-                tiempo_arcos+= int(tiempo)
+def traerEstacion(dataBase, idStation):
+    if m.contains(dataBase['name_IDstations'], idStation):
+        keyValue = m.get(dataBase['name_IDstations'], idStation)
+        return (keyValue['value'])
+    return None, None
 
-        tiempo_total = tiempo_arcos +(20 * stack.size(estaciones))
-        if tiempo_total>tiempoi and tiempo_total<tiempof:
-            numeroRutas+=1
-            dic = {'estacion inicial': lista[-1], 'estacion final': lista[0], 'Tiempo': tiempo_total}
-            listaDic.append(dic)
+def rutasCirculares(dataBase, tiempoi, tiempof, estacioni):
+   
+    ltArcos = gr.edges(dataBase['connections'])
+    rutas = 0
+    ltrutasCirculares = lt.newList(datastructure='ARRAY_LIST')
     
-    respuestas = (numeroRutas, listaDic)
-    return respuestas
+    for i in range(1, lt.size(ltArcos)+1): 
+        estacion  = lt.getElement(ltArcos, i)
+        if str(estacioni) == estacion['vertexA']:
+            estacionf = estacion['vertexB']
+            try:
+                existe_ar = gr.getEdge(dataBase['connections'], estacionf, estacioni)
+                weightestacionf = arcoExiste['weight']
+                duracion = estacion['weight'] + weightestacionf
+                if duracion+20 >= tiempoi and duracion+20 <= tiempof:
+                    rutas += 1
+                    estacioni_nom = traerEstacion(dataBase, estacioni)
+                    estacionf_nom = traerEstacion(dataBase, estacionf)
+                    lt.addLast(ltrutasCirculares, (estacioni_nom, estacionf_nom, duracion))
+            except:
+                pass   
     
 def nearbyStations(database, longitude, latitude):
     aspir = queue.newQueue()
@@ -161,3 +162,10 @@ def nearbyRoute(database,id1,id2):
     path = dijsktraRout.pathTo(search,id2)
     time = dijsktraRout.distTo(search,id2)
     return (path,time)
+    print("\nEl número de rutas circulares es " + str(rutas) + " y estos son los datos: ")
+
+    for i in range(1, lt.size(ltrutasCirculares)+1):
+        print("\nNombre de estación inicial: " + str(lt.getElement(ltrutasCirculares, i)[0]))
+        print("\nNombre de estación final: " + str(lt.getElement(ltrutasCirculares, i)[1]))
+        print("\nDuración estimada: " + str(lt.getElement(ltrutasCirculares, i)[2]) + " minutos")
+

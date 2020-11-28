@@ -148,3 +148,10 @@ def ejecutarRutaResistencia(dataBase):
             if duration <= tiempoMax: 
                 lt.addFirst(listaRutas, (station['vertexA'], station['vertexB'], duration))
                 print (listaRutas['elements'])
+def ejecutarRutasCirculares(dataBase)->None:
+    estacioni = input("\nIngrese el ID de la estación inicial: ")
+    print("\nAhora ingrese su tiempo disponible en minutos: ")
+    tiempoi = int(input("\nEntre: "))
+    tiempof = int(input("\nHasta: "))
+    Funtions.circularRoutes(dataBase, tiempoi, tiempof, estacioni)
+   
