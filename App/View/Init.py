@@ -118,10 +118,10 @@ def ejecutarIdentificarBicicletas(dataBase):
     while listiterator.hasNext(stations):
         print('\t',listiterator.next(stations))
 
-def ejecutarRutasCirculares(database)->None:
+def ejecutarRutasCirculares(dataBase)->None:
     estacioni = input("\nIngrese el ID de la estación inicial: ")
     print("\nAhora ingrese su tiempo disponible en minutos: ")
     tiempoi = int(input("\nEntre: "))
     tiempof = int(input("\nHasta: "))
-    Funtions.circularRoutes(citibike, tiempoi, tiempof, estacioni)
+    Funtions.circularRoutes(dataBase, tiempoi, tiempof, estacioni)
    
